@@ -9,17 +9,21 @@ terraform {
   }
 }
 
+locals {
+  resource_prefix_name = "TForm2022Example01"  
+}
+
 provider "azurerm" {
   features {}
 }
 
 resource "azurerm_resource_group" "example" {
-  name     = "TFormAkl2022"
+  name     = local.resource_prefix_name
   location = "West Europe"
 }
 
 resource "azurerm_app_service_plan" "example" {
-  name                = "TFormAkl2022-appserviceplan"
+  name                = "${local.resource_prefix_name}-appserviceplan"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
 
@@ -30,7 +34,7 @@ resource "azurerm_app_service_plan" "example" {
 }
 
 resource "azurerm_app_service" "example" {
-  name                = "TFormAkl2022-app-service"
+  name                = "${local.resource_prefix_name}-app-service"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
   app_service_plan_id = azurerm_app_service_plan.example.id
